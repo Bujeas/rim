@@ -46,6 +46,12 @@
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
+                        <div class="form-group"><label class="col-sm-2 control-label">Document Category</label>
+                            <div class="col-sm-10">
+                                {{ Form::select('temp_doc', $document, $document_id, array('id' => 'temp_doc', 'class' => 'form-control', 'required' => 'required')) }}
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
                         <div class="form-group"><label class="col-sm-2 control-label">Prefix Name</label>
                             <div class="col-sm-10">
                                 {{ Form::text('temp_prefix', $template->prefix, array('id' => 'temp_prefix', 'class' => 'form-control', 'required' => 'required')) }}
@@ -54,29 +60,38 @@
                         <div class="hr-line-dashed"></div>
                         <div class="form-group"><label class="col-sm-2 control-label">Division Name</label>
                             <div class="col-sm-10">
-                                {{ Form::select('temp_div', $division, $division_id, array('id' => 'temp_div', 'class' => 'form-control', 'required' => 'required')) }}
+                                {{ Form::text('temp_div', $division, array('class' => 'form-control', 'autocomplete' => 'off', 'id' => 'temp_div', 'required' => 'required')) }}
+                                {{ Form::hidden('temp_div_id', $division, array('id' => 'temp_div_id')) }}
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group"><label class="col-sm-2 control-label">Department Name</label>
                             <div class="col-sm-10">
-                                {{-- {{ Form::select('temp_dept', array('' => 'Select Department'), null, array('class' => 'form-control', 'id' => 'temp_dept', 'required' => 'required')) }} --}}
-                                {{ Form::select('temp_dept', $department, $dept_id, array('id' => 'temp_dept', 'class' => 'form-control', 'required' => 'required')) }}
+                                {{ Form::text('temp_dept', $department, array('class' => 'form-control', 'autocomplete' => 'off', 'id' => 'temp_dept', 'required' => 'required')) }}
+                                {{ Form::hidden('temp_dept_id', $department, array('id' => 'temp_dept_id')) }}
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group"><label class="col-sm-2 control-label">Section Name</label>
                             <div class="col-sm-10">
-                                {{-- {{ Form::select('temp_sec', array('' => 'Select Section'), null, array('class' => 'form-control', 'id' => 'temp_sec', 'required' => 'required')) }} --}}
-                                {{ Form::select('temp_sec', $section, $section_id, array('id' => 'temp_sec', 'class' => 'form-control', 'required' => 'required')) }}
+                                {{ Form::text('temp_section', $section, array('class' => 'form-control', 'autocomplete' => 'off', 'id' => 'temp_section', 'required' => 'required')) }}
+                                {{ Form::hidden('temp_section_id', $section, array('id' => 'temp_section_id')) }}
                             </div>
                         </div>
-                        {{-- <div class="hr-line-dashed"></div>
-                        <div class="form-group"><label class="col-sm-2 control-label">Document Name</label>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group"><label class="col-sm-2 control-label">Unit Name</label>
                             <div class="col-sm-10">
-                                {{ Form::select('temp_doc', $document, $document_id, array('id' => 'temp_doc', 'class' => 'form-control', 'required' => 'required')) }}
+                                {{ Form::text('temp_unit', $unit, array('class' => 'form-control', 'autocomplete' => 'off', 'id' => 'temp_unit')) }}
+                                {{ Form::hidden('temp_unit_id', $unit, array('id' => 'temp_unit_id')) }}
                             </div>
-                        </div> --}}
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                         <div class="form-group"><label class="col-sm-2 control-label">Sub Unit Name</label>
+                            <div class="col-sm-10">
+                                {{ Form::text('temp_subunit', $subunit, array('class' => 'form-control', 'autocomplete' => 'off', 'id' => 'temp_subunit')) }}
+                                {{ Form::hidden('temp_subunit_id', $subunit, array('id' => 'temp_subunit_id')) }}
+                            </div>
+                        </div> 
                         <div class="hr-line-dashed"></div>
                         <div class="form-group"><label class="col-sm-2 control-label">Postfix Name</label>
                             <div class="col-sm-10">
@@ -85,32 +100,28 @@
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group"><label class="col-sm-2 control-label">Template Format</label>
-                            <div class="col-sm-10" style="margin-left: -18px;">
-                                <label class="checkbox-inline"><span style="" id="temp_format_prefix">{{ $temp_format_prefix }}</span></label>
-                                <label class="checkbox-inline">/</label>
-                            	<label class="checkbox-inline"><span style="" id="temp_format_div">{{ $temp_format_div }}</span></label> 
-                            	<label class="checkbox-inline">/</label> 
-                                <label class="checkbox-inline"><span style="" id="temp_format_dept">{{ $temp_format_dept }}</span></label>
-                            	<label class="checkbox-inline">/</label> 
-                            	<label class="checkbox-inline"><span style="" id="temp_format_sec">{{ $temp_format_sec }}</span></label>
-                                <label class="checkbox-inline">/</label>
-                                {{-- @if(!empty($template->category_id)) --}}
-                                <label class="checkbox-inline"><span style="" id="temp_format_sequence">{{ $temp_format_sequence }}</span></label>
-                                <label class="checkbox-inline">/</label>
-                                {{-- @endif --}}
-                                <label class="checkbox-inline"><span style="" id="temp_format_year">{{ $temp_format_year }}</span></label>
-                                <label class="checkbox-inline">/</label>
-                                <label class="checkbox-inline"><span style="" id="temp_format_postfix">{{ $temp_format_postfix }}</span></label>
+                            <div class="col-sm-10">
+                                <div class="alert alert-success" style="height: 50px;">
+                                    <span id="temp_format_prefix">{{ $temp_format_prefix }}</span>
+                                    <span id="temp_format_div">{{ $temp_format_div }}</span>
+                                    <span id="temp_format_dept">{{ $temp_format_dept }}</span>
+                                    <span id="temp_format_sec">{{ $temp_format_sec }}</span>
+                                    <span id="temp_format_unit">{{ $temp_format_unit }}</span>
+                                    <span id="temp_format_subunit">{{ $temp_format_subunit }}</span>
+                                    <span id="temp_format_postfix">{{ $temp_format_postfix }}</span>
+                                </div>
 
                                 {{-- Hidden Format --}}
                                 {{ Form::hidden('f_div', $temp_format_div, array('id' => 'f_div')) }}
                                 {{ Form::hidden('f_dept', $temp_format_dept, array('id' => 'f_dept')) }}
                                 {{ Form::hidden('f_sec', $temp_format_sec, array('id' => 'f_sec')) }}
-                                {{ Form::hidden('f_seq', $temp_format_sequence, array('id' => 'f_seq')) }}
-                                {{-- {{ Form::hidden('f_doc', $temp_format_doc, array('id' => 'f_doc')) }} --}}
+                                {{ Form::hidden('f_unit', $temp_format_unit, array('id' => 'f_unit')) }}
+                                {{ Form::hidden('f_subunit', $temp_format_subunit, array('id' => 'f_subunit')) }}
+                                {{-- {{ Form::hidden('f_seq', $running_no, array('id' => 'f_seq')) }} --}}
                                 {{ Form::hidden('f_year', $year, array('id' => 'f_year')) }}
 
                             </div>
+
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group"><label class="col-sm-2 control-label">Description</label>

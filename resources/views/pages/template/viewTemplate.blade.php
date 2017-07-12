@@ -103,12 +103,12 @@
                                 <span class="form-control" style="border-style: none;">{{ $templates->description }}</span>
                             </div>
                         </div>
-                        <div class="hr-line-dashed"></div>
+                        <!-- <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-sm-4 col-sm-offset-2">
                                 <a href="{{ route('template') }}" class="btn btn-primary" style="margin-left: 10px;">OK</a>
                             </div>
-                        </div>
+                        </div> -->
                     </form>
                 </div>
             </div>
