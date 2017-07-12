@@ -1,0 +1,79 @@
+{
+    "name": "laravel/laravel",
+    "description": "The Laravel Framework.",
+    "keywords": ["framework", "laravel"],
+    "license": "MIT",
+    "type": "project",
+    "require": {
+        "php": ">=5.6.4",
+        "barryvdh/laravel-debugbar": "^2.3",
+        "barryvdh/laravel-dompdf": "^0.8.0",
+        "cartalyst/sentinel": "2.0.*",
+        "intervention/image": "^2.3",
+        "jenssegers/date": "^3.2",
+        "laracasts/generators": "dev-master as 1.1.4",
+        "laravel/framework": "5.4.*",
+        "laravel/tinker": "~1.0",
+        "laravelcollective/html": "^5.4"
+    },
+    "require-dev": {
+        "fzaninotto/faker": "~1.4",
+        "laracasts/generators": "^1.1",
+        "mockery/mockery": "0.9.*",
+        "phpunit/phpunit": "~5.7"
+    },
+    "autoload": {
+        "classmap": [
+            "database"
+        ],
+        "files": [
+            "app/Support/helpers.php",
+            "app/Classes/LDAP.php",
+            "app/Employee.php",
+            "app/User.php",
+            "app/UserGroup.php",
+            "app/Role.php",
+            "app/RoleUser.php",
+            "app/Division.php",
+            "app/Department.php",
+            "app/Section.php",
+            "app/Unit.php",
+            "app/Subunit.php",
+            "app/Document.php",
+            "app/Template.php",
+            "app/TemplateHistory.php",
+            "app/Sequence.php",
+            "app/DocumentNumber.php",
+            "app/DocumentNumberHistory.php",
+            "app/Action.php"
+        ],
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "post-root-package-install": [
+            "php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [
+            "php artisan key:generate"
+        ],
+        "post-install-cmd": [
+            "Illuminate\\Foundation\\ComposerScripts::postInstall",
+            "php artisan optimize"
+        ],
+        "post-update-cmd": [
+            "Illuminate\\Foundation\\ComposerScripts::postUpdate",
+            "php artisan optimize"
+        ]
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true
+    }
+}
