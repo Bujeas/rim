@@ -65,15 +65,15 @@
                         <div class="hr-line-dashed"></div>
                         <div class="form-group"><label class="col-sm-2 control-label">Department Name</label>
                             <div class="col-sm-10">
-                                {{-- {{ Form::select('temp_dept', array('' => 'Select Department'), null, array('class' => 'form-control', 'id' => 'temp_dept', 'required' => 'required')) }} --}}
-                                {{ Form::text('temp_dept', '', array('class' => 'form-control', 'autocomplete' => 'off', 'id' => 'temp_dept', 'required' => 'required')) }}
+                                {{-- {{ Form::select('temp_dept', array('' => 'Select Department'), null, array('class' => 'form-control', 'id' => 'temp_dept')) }} --}}
+                                {{ Form::text('temp_dept', '', array('class' => 'form-control', 'autocomplete' => 'off', 'id' => 'temp_dept')) }}
                                 {{ Form::hidden('temp_dept_id', '', array('id' => 'temp_dept_id')) }}
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group"><label class="col-sm-2 control-label">Section Name</label>
                             <div class="col-sm-10">
-                                {{-- {{ Form::select('temp_sec', array('' => 'Select Section'), null, array('class' => 'form-control', 'id' => 'temp_sec', 'required' => 'required')) }} --}}
+                                {{-- {{ Form::select('temp_sec', array('' => 'Select Section'), null, array('class' => 'form-control', 'id' => 'temp_sec')) }} --}}
                                 {{ Form::text('temp_section', '', array('class' => 'form-control', 'autocomplete' => 'off', 'id' => 'temp_section')) }}
                                 {{ Form::hidden('temp_section_id', '', array('id' => 'temp_section_id')) }}
                             </div>

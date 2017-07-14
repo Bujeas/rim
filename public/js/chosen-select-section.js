@@ -33,7 +33,7 @@ $(document).ready(function(){
             }).on('typeahead:selected', function(event, data){
                 $('#temp_section_id').val(data.id);
                 $('#temp_format_sec').html(data.code + ' /');
-                $('#f_sec').val(data.code);
+                $('#f_sec').val(data.code + '/');
                 $('#temp_default').hide();
                 console.log(data.id);
                 console.log(data.code);

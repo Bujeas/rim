@@ -92,11 +92,21 @@ class TemplateController extends Controller
 
     public function POST_newTemplate()
     {
+        $obj_dept = Input::get('f_dept');
+        if(!empty($obj_dept))
+        {
+            $department_raw = $obj_dept;
+            $department = $obj_dept;
+        }else{
+            $department_raw = '-/';
+            $department = '';
+        }
+        
         $obj_sec = Input::get('f_sec');
         if(!empty($obj_sec))
         {
-            $section_raw = $obj_sec.'/';
-            $section = $obj_sec.'/';
+            $section_raw = $obj_sec;
+            $section = $obj_sec;
         }else{
             $section_raw = '-/';
             $section = '';
@@ -105,8 +115,8 @@ class TemplateController extends Controller
         $obj_unit = Input::get('f_unit');
         if(!empty($obj_unit))
         {
-            $unit_raw = $obj_unit.'/';
-            $unit = $obj_unit.'/';
+            $unit_raw = $obj_unit;
+            $unit = $obj_unit;
         }else{
             $unit_raw = '-/';
             $unit = '';
@@ -115,8 +125,8 @@ class TemplateController extends Controller
         $obj_subunit = Input::get('f_subunit');
         if(!empty($obj_subunit))
         {
-            $subunit_raw = $obj_subunit.'/';
-            $subunit = $obj_subunit.'/';
+            $subunit_raw = $obj_subunit;
+            $subunit = $obj_subunit;
         }else{
             $subunit_raw = '-/';
             $subunit = '';
@@ -124,23 +134,39 @@ class TemplateController extends Controller
 
         $format =   Input::get('temp_prefix').
                     '/'.Input::get('f_div').
-                    '/'.Input::get('f_dept').
-                    '/'.
+                    $department.
                     $section.
                     $unit.
                     $subunit.
                     Input::get('temp_postfix');
+
+        $format_raw =   Input::get('temp_prefix').
+                        '/'.Input::get('f_div').
+                        $department_raw.
+                        $section_raw.
+                        $unit_raw.
+                        $subunit_raw.
+                        Input::get('temp_postfix');
+
+        // $format =   Input::get('temp_prefix').
+        //             '/'.Input::get('f_div').
+        //             '/'.Input::get('f_dept').
+        //             '/'.
+        //             $section.
+        //             $unit.
+        //             $subunit.
+        //             Input::get('temp_postfix');
                     // '-00000000-'.
                     // Input::get('f_year');
 
-        $format_raw =   Input::get('temp_prefix').
-                    '/'.Input::get('f_div').
-                    '/'.Input::get('f_dept').
-                    '/'.
-                    $section_raw.
-                    $unit_raw.
-                    $subunit_raw.
-                    Input::get('temp_postfix');
+        // $format_raw =   Input::get('temp_prefix').
+        //             '/'.Input::get('f_div').
+        //             '/'.Input::get('f_dept').
+        //             '/'.
+        //             $section_raw.
+        //             $unit_raw.
+        //             $subunit_raw.
+        //             Input::get('temp_postfix');
                     // '-00000000-'.
                     // Input::get('f_year');
 
@@ -258,22 +284,89 @@ class TemplateController extends Controller
     {
         if($request->session()->has('user.id'))
         {
-            $templates = Template::where('id', $id)->first();
+            $temp_objs = Template::where('id', $id)->first();
+            if(!empty($temp_objs))
+            {
+                $temp_name = $temp_objs->temp_name;
+                $temp_code = $temp_objs->temp_code;
+                $temp_prefix = $temp_objs->prefix;
+                $temp_postfix = $temp_objs->postfix;
+                $temp_format = $temp_objs->format;
+                $temp_cat_id = $temp_objs->category_id;
+                $temp_desc = $temp_objs->description;
+            }else{
+                $temp_name = '';
+                $temp_code = '';
+                $temp_prefix = '';
+                $temp_postfix = '';
+                $temp_format = '';
+                $temp_cat_id = '';
+                $temp_desc = '';
+            }
 
-            $divisions = Division::join('doc_notemplates', 'divisions.id', '=', 'doc_notemplates.division_id')->select('divisions.division_name')->where('doc_notemplates.id', $id)->where('doc_notemplates.division_id', $templates->division_id)->first();
+            $div_objs = Division::join('doc_notemplates', 'divisions.id', '=', 'doc_notemplates.division_id')->select('divisions.division_name')->where('doc_notemplates.id', $id)->where('doc_notemplates.division_id', $temp_objs->division_id)->first();
+            if(!empty($div_objs))
+            {
+                $divisions = $div_objs->division_name;
+            }else{
+                $divisions = '';
+            }
+            
+            $dept_objs = Department::join('doc_notemplates', 'departments.id', '=', 'doc_notemplates.dept_id')->select('departments.dept_name')->where('doc_notemplates.id', $id)->where('doc_notemplates.dept_id', $temp_objs->dept_id)->first();
+            if(!empty($dept_objs))
+            {
+                $departments = $dept_objs->dept_name;
+            }else{
+                $departments = '';
+            }
+            
+            $sec_objs = Section::join('doc_notemplates', 'sections.id', '=', 'doc_notemplates.section_id')->select('sections.section_name')->where('doc_notemplates.id', $id)->where('doc_notemplates.section_id', $temp_objs->section_id)->first();
+            if(!empty($sec_objs))
+            {
+                $sections = $sec_objs->section_name;
+            }else{
+                $sections = '';
+            }
 
-            $departments = Department::join('doc_notemplates', 'departments.id', '=', 'doc_notemplates.dept_id')->select('departments.dept_name')->where('doc_notemplates.id', $id)->where('doc_notemplates.dept_id', $templates->dept_id)->first();
+            $unit_objs = Unit::join('doc_notemplates', 'units.id', '=', 'doc_notemplates.unit_id')->select('units.unit_name')->where('doc_notemplates.id', $id)->where('doc_notemplates.unit_id', $temp_objs->unit_id)->first();
+            if(!empty($unit_objs))
+            {
+                $units = $unit_objs->unit_name;
+            }else{
+                $units = '';
+            }
 
-            $sections = Section::join('doc_notemplates', 'sections.id', '=', 'doc_notemplates.section_id')->select('sections.section_name')->where('doc_notemplates.id', $id)->where('doc_notemplates.section_id', $templates->section_id)->first();
-
-            $documents = Document::join('doc_notemplates', 'doc_categories.id', '=', 'doc_notemplates.category_id')->select('doc_categories.doc_cat')->where('doc_notemplates.id', $id)->where('doc_notemplates.category_id', $templates->category_id)->first();
-
+            $subunit_objs = Subunit::join('doc_notemplates', 'subunits.id', '=', 'doc_notemplates.subunit_id')->select('subunits.subunit_name')->where('doc_notemplates.id', $id)->where('doc_notemplates.subunit_id', $temp_objs->subunit_id)->first();
+            if(!empty($subunit_objs))
+            {
+                $subunits = $subunit_objs->subunit_name;
+            }else{
+                $subunits = '';
+            }
+            
+            $doc_objs = Document::join('doc_notemplates', 'doc_categories.id', '=', 'doc_notemplates.category_id')->select('doc_categories.doc_cat')->where('doc_notemplates.id', $id)->where('doc_notemplates.category_id', $temp_objs->category_id)->first();
+            if(!empty($doc_objs))
+            {
+                $documents = $doc_objs->doc_cat;
+            }else{
+                $documents = '';
+            }
+            
             $params = array(
                 'id'            => $id, 
-                'templates'     => $templates, 
+                // 'templates'     => $templates, 
+                'temp_name'     => $temp_name,
+                'temp_code'     => $temp_code,
+                'temp_prefix'   => $temp_prefix,
+                'temp_postfix'  => $temp_postfix,
+                'temp_format'   => $temp_format,
+                'temp_cat_id'   => $temp_cat_id,
+                'temp_desc'     => $temp_desc,
                 'divisions'     => $divisions, 
                 'departments'   => $departments, 
                 'sections'      => $sections, 
+                'units'         => $units,
+                'subunits'      => $subunits,
                 'documents'     => $documents
             );
 
@@ -428,7 +521,9 @@ class TemplateController extends Controller
                 'department'            => $department, 
                 'section_id'            => $section_id, 
                 'section'               => $section, 
+                'unit_id'               => $unit_id,
                 'unit'                  => $unit, 
+                'subunit_id'            => $subunit_id,
                 'subunit'               => $subunit, 
                 'document_id'           => $document_id, 
                 'document'              => $document, 
@@ -462,6 +557,16 @@ class TemplateController extends Controller
             // $format = Input::get('temp_prefix').'/'.Input::get('f_div').'/'.Input::get('f_dept').'/'.Input::get('f_sec').'/00000000/'.Input::get('f_year').'/'.Input::get('temp_postfix');
         // }
 
+        $obj_dept = Input::get('f_dept');
+        if(!empty($obj_dept))
+        {
+            $department_raw = $obj_dept;
+            $department = $obj_dept;
+        }else{
+            $department_raw = '-/';
+            $department = '';
+        }
+
         $obj_sec = Input::get('f_sec');
         if(!empty($obj_sec))
         {
@@ -492,31 +597,27 @@ class TemplateController extends Controller
             $subunit = '';
         }
 
-        $format =   str_replace('/','',Input::get('temp_prefix')).
-                    // '/'.
-                    '/'.str_replace('/','',Input::get('f_div')).
-                    '/'.str_replace('/','',Input::get('f_dept')).
-                    '/'.$section.
-                    '/'.$unit.
-                    '/'.$subunit.
-                    '/'.str_replace('/','',Input::get('temp_postfix'));
+        $format =   Input::get('temp_prefix').
+                    '/'.Input::get('f_div').
+                    $department.
+                    $section.
+                    $unit.
+                    $subunit.
+                    Input::get('temp_postfix');
 
-        $format_raw =   str_replace('/','',Input::get('temp_prefix')).
-                        // '/'.
-                        '/'.str_replace('/','',Input::get('f_div')).
-                        '/'.str_replace('/','',Input::get('f_dept')).
-                        '/'.str_replace('/','',$section_raw).
-                        '/'.str_replace('/','',$unit_raw).
-                        '/'.str_replace('/','',$subunit_raw).
-                        '/'.str_replace('/','',Input::get('temp_postfix'));
+        $format_raw =   Input::get('temp_prefix').
+                        '/'.Input::get('f_div').
+                        $department_raw.
+                        $section_raw.
+                        $unit_raw.
+                        $subunit_raw.
+                        Input::get('temp_postfix');
 
         // $temp_dept = explode(',', Input::get('temp_dept'));
         // $department = $temp_dept[0];
 
         // $temp_sec = explode(',', Input::get('temp_sec'));
         // $section = $temp_sec[0];
-
-        echo 'Format: '.str_replace('//','/',$format).'<br /><br /><br /><br />';
 
         //Update Table Template
         //-------------------------------------------------------------

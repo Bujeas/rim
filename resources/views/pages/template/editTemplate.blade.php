@@ -4,7 +4,7 @@
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10">
-        <h2>Document</h2>
+        <h2>Template</h2>
         <ol class="breadcrumb">
             <li>
                 <a href="{{ route('home') }}">Home</a>
@@ -61,35 +61,35 @@
                         <div class="form-group"><label class="col-sm-2 control-label">Division Name</label>
                             <div class="col-sm-10">
                                 {{ Form::text('temp_div', $division, array('class' => 'form-control', 'autocomplete' => 'off', 'id' => 'temp_div', 'required' => 'required')) }}
-                                {{ Form::hidden('temp_div_id', $division, array('id' => 'temp_div_id')) }}
+                                {{ Form::hidden('temp_div_id', $division_id, array('id' => 'temp_div_id')) }}
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group"><label class="col-sm-2 control-label">Department Name</label>
                             <div class="col-sm-10">
-                                {{ Form::text('temp_dept', $department, array('class' => 'form-control', 'autocomplete' => 'off', 'id' => 'temp_dept', 'required' => 'required')) }}
-                                {{ Form::hidden('temp_dept_id', $department, array('id' => 'temp_dept_id')) }}
+                                {{ Form::text('temp_dept', $department, array('class' => 'form-control', 'autocomplete' => 'off', 'id' => 'temp_dept')) }}
+                                {{ Form::hidden('temp_dept_id', $dept_id, array('id' => 'temp_dept_id')) }}
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group"><label class="col-sm-2 control-label">Section Name</label>
                             <div class="col-sm-10">
-                                {{ Form::text('temp_section', $section, array('class' => 'form-control', 'autocomplete' => 'off', 'id' => 'temp_section', 'required' => 'required')) }}
-                                {{ Form::hidden('temp_section_id', $section, array('id' => 'temp_section_id')) }}
+                                {{ Form::text('temp_section', $section, array('class' => 'form-control', 'autocomplete' => 'off', 'id' => 'temp_section')) }}
+                                {{ Form::hidden('temp_section_id', $section_id, array('id' => 'temp_section_id')) }}
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group"><label class="col-sm-2 control-label">Unit Name</label>
                             <div class="col-sm-10">
                                 {{ Form::text('temp_unit', $unit, array('class' => 'form-control', 'autocomplete' => 'off', 'id' => 'temp_unit')) }}
-                                {{ Form::hidden('temp_unit_id', $unit, array('id' => 'temp_unit_id')) }}
+                                {{ Form::hidden('temp_unit_id', $unit_id, array('id' => 'temp_unit_id')) }}
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                          <div class="form-group"><label class="col-sm-2 control-label">Sub Unit Name</label>
                             <div class="col-sm-10">
                                 {{ Form::text('temp_subunit', $subunit, array('class' => 'form-control', 'autocomplete' => 'off', 'id' => 'temp_subunit')) }}
-                                {{ Form::hidden('temp_subunit_id', $subunit, array('id' => 'temp_subunit_id')) }}
+                                {{ Form::hidden('temp_subunit_id', $subunit_id, array('id' => 'temp_subunit_id')) }}
                             </div>
                         </div> 
                         <div class="hr-line-dashed"></div>

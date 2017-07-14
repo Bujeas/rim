@@ -92,6 +92,41 @@ $(document).ready(function() {
         $('#temp_default').hide();
     });
 
+    //onChange Division
+    $('#temp_div').keyup(function(){
+        $('#temp_format_div').html($('#temp_div').val());
+        $('#f_div').val($('#temp_div').val());
+        $('#temp_div_id').val($('#temp_div').val());
+    });
+
+     //onChange Department
+    $('#temp_dept').keyup(function() {
+        $('#temp_format_dept').html($('#temp_dept').val());
+        $('#f_dept').val($('#temp_dept').val());
+        $('#temp_dept_id').val($('#temp_dept').val());
+    });
+
+    //onChange Section
+    $('#temp_section').keyup(function() {
+        $('#temp_format_sec').html($('#temp_section').val());
+        $('#f_sec').val($('#temp_section').val());
+        $('#temp_section_id').val($('#temp_section').val());
+    });
+
+    //onChange Unit
+    $('#temp_unit').keyup(function() {
+        $('#temp_format_unit').html($('#temp_unit').val());
+        $('#f_unit').val($('#temp_unit').val());
+        $('#temp_unit_id').val($('$temp_unit').val());
+    });
+
+    //onChange Sub Unit
+    $('#temp_subunit').keyup(function() {
+        $('#temp_format_subunit').html($('#temp_subunit').val());
+        $('#f_subunit').val($('#temp_subunit').val());
+        $('#temp_subunit_id').val($('#temp_subunit').val());
+    });
+
     //onChange Postfix
     $('#temp_postfix').keyup(function() {
         $('#temp_format_postfix').html($('#temp_postfix').val());

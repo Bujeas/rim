@@ -34,7 +34,7 @@ $(document).ready(function(){
                 $('#temp_div_id').val(data.id);
                 // $('#temp_format_prefix').html(data.code+' /');
                 $('#temp_format_div').html(data.code + ' /');
-                $('#f_div').val(data.code);
+                $('#f_div').val(data.code + '/');
                 $('#temp_default').hide();
                 console.log(data.id);
                 console.log(data.code);
