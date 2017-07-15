@@ -83,6 +83,7 @@ $(document).ready(function() {
 
     //onChange Sequence Document
     $('#sequence_doc_name').change(function() {
+        $('#seq_doc_id').val($('#sequence_doc_name :selected').val());
         $('#seq_doc_name').val($('#sequence_doc_name :selected').text());
     });
 

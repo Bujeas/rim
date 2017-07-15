@@ -3,35 +3,37 @@ $(document).ready(function() {
  	 	$("#hr-template").fadeOut();
   		$("#seq_temp").fadeOut();
 
-	 	var div  = $('#f_div').val();
-	 	var dept = $('#f_dept').val();
-	 	var sec  = $('#f_sec').val();
-	 	// var yy   = $('#f_year').val();
+	 	// var div  = $('#f_div').val();
+	 	// var dept = $('#f_dept').val();
+	 	// var sec  = $('#f_sec').val();
+		// var yy   = $('#f_year').val();
+			  
+		var doc = $('#seq_doc_id').val();
 
 	 	// var str = div + '_' + dept + '_' + sec + '_00000000_' + yy;
-	 	var str;
+	 	// var str;
 
-	 	if(div != '')
-	 	{
-	 		str = div;
-	 	}
+	 	// if(div != '')
+	 	// {
+	 	// 	str = div;
+	 	// }
 
-	 	if(div != '' && dept != '')
-	 	{
-	 		str = div + '_' + dept;
-	 	}
+	 	// if(div != '' && dept != '')
+	 	// {
+	 	// 	str = div + '_' + dept;
+	 	// }
 
-	 	if(div != '' && dept != '' && sec != '')
-	 	{
-	 		str = div + '_' + dept + '_' + sec;
-	 	}
+	 	// if(div != '' && dept != '' && sec != '')
+	 	// {
+	 	// 	str = div + '_' + dept + '_' + sec;
+	 	// }
 
 	 	var obj_name = 'tempList';
-	 	var url = '/api/listTemplate.json/' + str;
+	 	var url = '/api/listTemplate.json/' + doc;
 
 	 	$.ajax({
 	 		type: "GET",
-	 		url: '/api/listTemplate.json/' + str,
+	 		url: '/api/listTemplate.json/' + doc,
 	 		contentType: "application/json; charset=utf-8",
 	        dataType: "json",
 	        beforeSend: function(){
@@ -60,8 +62,15 @@ $(document).ready(function() {
 	          		$("#temp_loader").fadeOut('slow');
 	          		$("#sequence_name").fadeIn('slow');
 				}
-			}
+			},
+			error: function (jqXHR, textStatus, errorThrown) {
+				$('#modal_seq').modal('show');
+        	}
 	 	});
+	});
+
+	$('#btn-copy').click(function(){
+		$('#btn-copied').fadeOut(5);
 	});
 
 	// $('#sequence_action').change(function() {

@@ -52,8 +52,17 @@
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group"><label class="col-sm-2 control-label">Format Created</label>
-                            <div class="col-sm-10">
-                                <span class="form-control" style="border-style: none;">{{ $format }}</span>
+                            <div class="col-xs-6 col-md-6">
+                                <span id="format" class="form-control" style="border-style: none;">{{ $format }}</span>
+                            </div>
+                            <div class="col-xs-4 col-md-4">
+                                <a class="btn btn-warning btn-outline" id="btn-copy" data-toggle="tooltip" data-placement="top" title="Copy to clipboard" onclick="copyToClipboard('#format')">
+                                <i class="fa fa-clipboard"> </i>
+                                </a>
+                                &nbsp;
+                                <span class="btn btn-outline btn-success" id="btn-copied" style="display: none;">
+                                <i class="fa fa-check"> </i> COPIED
+                                </span>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>

@@ -2,6 +2,25 @@
 
 @section ('content')
 
+<div class="modal inmodal" id="modal_seq" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content animated fadeIn">
+            <div class="modal-header">
+                <i class="fa fa-warning modal-icon"></i>
+                <h4 class="modal-title">Warning</h4>
+            </div>
+            <div class="modal-body text-center">
+                <p>
+                    Please select document category.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10">
         <h2>Sequence</h2>
@@ -31,13 +50,14 @@
                 </div>
                 <div class="ibox-content">
                     {{ Form::open(array('route' => array('sequence.new.post'), 'class' => 'form-horizontal', 'id' => 'form')) }}
-                        <div class="form-group"><label class="col-sm-2 control-label">Document Type</label>
+                        <div class="form-group"><label class="col-sm-2 control-label">Document Category<Category></Category></label>
                             <div class="col-sm-10">
                                 {{ Form::select('sequence_doc_name', $document, '', array('id' => 'sequence_doc_name', 'class' => 'form-control', 'required' => 'required')) }}
+                                {{ Form::hidden('seq_doc_id', '', array('id' => 'seq_doc_id')) }}
                                 {{ Form::hidden('seq_doc_name', '', array('id' => 'seq_doc_name')) }}
                             </div>
                         </div>
-                        <div class="hr-line-dashed"></div>
+                        {{--  <div class="hr-line-dashed"></div>
                         <div class="form-group"><label class="col-sm-2 control-label">Division Name</label>
                             <div class="col-sm-10">
                                 {{ Form::select('temp_div', $division, '', array('id' => 'temp_div', 'class' => 'form-control', 'required' => 'required')) }}
@@ -55,7 +75,7 @@
                                 {{ Form::select('temp_sec', array('' => 'Select Section'), null, array('class' => 'form-control', 'id' => 'temp_sec', 'required' => 'required')) }}
                             </div>
                         </div>
-                        {{-- <div class="hr-line-dashed"></div>
+                        <div class="hr-line-dashed"></div>
                         <div class="form-group"><label class="col-sm-2 control-label">Sequence Number</label>
                             <div class="col-sm-10">
                                 {{ Form::text('sequence_number', $running_no, array('id' => 'sequence_number', 'class' => 'form-control', 'disabled' => 'disabled')) }}

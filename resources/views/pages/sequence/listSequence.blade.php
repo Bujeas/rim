@@ -46,25 +46,14 @@
                                 @foreach ($doc_number as $key => $doc_numbers)
                                 <?php
                                     $template = DB::table('doc_notemplates')->where('id', $doc_numbers->template_id)->first();
-
-                                    $format_data = $template->format;
-                                    $format_array      = explode('/', $format_data);
-                                    $format_prefix     = $format_array[0];
-                                    $format_div        = $format_array[1];
-                                    $format_dept       = $format_array[2];
-                                    $format_sec        = $format_array[3];
-                                    $format_seq        = $format_array[4];
-                                    $format_year       = $format_array[5];
-                                    $format_postfix    = $format_array[6];
-
-                                    $format = $format_prefix.'/'.$format_div.'/'.$format_dept.'/'.$format_sec.'/'.convert_sequence($doc_numbers->running_number).'/'.$format_year.'/'.$format_postfix;
+                                    $doc_format = DB::table('doc_numbers')->join('doc_notemplates', 'doc_numbers.template_id', '=', 'doc_notemplates.id')->select('doc_notemplates.format')->where('doc_notemplates.id', $doc_numbers->template_id)->first();
                                 ?>
                                 <tr class="gradeX">
                                     <td class="text-center">{{ $key+1 }}</td>
                                     <td class="text-center">{{ $doc_numbers->document_name }}</td>
                                     <td class="text-center">{{ convert_sequence($doc_numbers->running_number) }}</td>
                                     @if(!empty($template))
-                                    <td class="text-center">{{ $format }}</td>
+                                    <td class="text-center">{{ $doc_format->format }}</td>
                                     @else
                                     <td class="text-center"><span class="label label-danger"><i class="fa fa-trash"></i> Deleted</span></td>
                                     @endif

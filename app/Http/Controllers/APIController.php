@@ -220,8 +220,8 @@ class APIController extends Controller
 	{
 		try
 		{
-			$str = explode('_', $id);
-			$total = count($str);
+			// $str = explode('_', $id);
+			// $total = count($str);
 
 			// $div = $str[0];
 			// $dept = $str[1];
@@ -231,28 +231,30 @@ class APIController extends Controller
 
 			// $format = $div . '/' . $dept . '/' . $sect . '/' . $seq . '/' . $year;
 
-			if($total == 1)
-			{
-				$div = $str[0];
-				$format = $div;
-			}
+			// if($total == 1)
+			// {
+			// 	$div = $str[0];
+			// 	$format = $div;
+			// }
 
-			if($total == 2)
-			{
-				$div = $str[0];
-				$dept = $str[1];
-				$format = $div . '/' . $dept;
-			}
+			// if($total == 2)
+			// {
+			// 	$div = $str[0];
+			// 	$dept = $str[1];
+			// 	$format = $div . '/' . $dept;
+			// }
 
-			if($total == 3)
-			{
-				$div = $str[0];
-				$dept = $str[1];
-				$sect = $str[2];
-				$format = $div . '/' . $dept . '/' . $sect;
-			}
+			// if($total == 3)
+			// {
+			// 	$div = $str[0];
+			// 	$dept = $str[1];
+			// 	$sect = $str[2];
+			// 	$format = $div . '/' . $dept . '/' . $sect;
+			// }
 
-			$template_objs = Template::where('format', 'like', '%' . $format . '%')->get();
+			// $template_objs = Template::where('format', 'like', '%' . $format . '%')->get();
+
+			$template_objs = Template::where('category_id', $id)->get();
 
 			$templates = array();
 			foreach ($template_objs as $key => $template) {
@@ -260,9 +262,7 @@ class APIController extends Controller
 			}
 
 			$array_obj = 'tempList';
-
 			$merge = array_merge(array(array('0', 'Select Template')), $templates);
-
 			$concat_template = array($array_obj => $merge);
 
 			return \Response::json($concat_template);

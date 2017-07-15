@@ -15,6 +15,7 @@ use app\Document;
 use app\Template;
 use app\TemplateHistory;
 use app\Action;
+use Date;
 
 class SequenceController extends Controller
 {
@@ -23,7 +24,6 @@ class SequenceController extends Controller
     	if($request->session()->has('user.id'))
         {
             $doc_number = DocumentNumber::all();
-
         	$params = array('doc_number' => $doc_number);
 
         	return view('pages.sequence.listSequence', $params);
@@ -67,13 +67,25 @@ class SequenceController extends Controller
             $temp_list = $temp_data->all();
             $template = array('' => 'Select Template') + $temp_list;
 
-            $sequence = Sequence::orderBy('id', 'desc')->limit('1')->first();
+            $sequence_no = Sequence::orderBy('id', 'desc')->limit('1')->first();
             // $sequence = DocumentNumber::orderBy('id', 'desc')->limit('1')->first();
 
-            if(!empty($sequence))
+            $sequence_date = Sequence::orderBy('created_at', 'desc')->limit('1')->first();
+            if(!empty($sequence_date))
             {
-                // $index = $sequence->running_number + 1;
-                $index = $sequence->sequence_number + 1;
+                $date = $sequence_date->date_created;
+                $str_year = new Date($date);
+                $prv_year = $str_year->format('Y');
+            }else{
+                $prv_year = Date::today()->format('Y');
+            }
+
+            $crr_year = Date::today()->format('Y');
+
+            if(!empty($sequence_no) && ($prv_year == $crr_year))
+            {
+                // $index = $sequence_no->running_number + 1;
+                $index = $sequence_no->sequence_number + 1;
                 $new_index = convert_sequence($index); //str_pad($index, 8, "0", STR_PAD_LEFT);
                 $running_no = $new_index;
             }else{
@@ -103,25 +115,24 @@ class SequenceController extends Controller
 
     public function POST_newSequence()
     {
-        $doc_numbers = DocumentNumber::all();
+        // $doc_numbers = DocumentNumber::all();
 
-        foreach($doc_numbers as $doc_number)
-        {
-            if(Input::get('sequence_doc_name') == $doc_number->document_id && Input::get('sequence_name') == $doc_number->template_id)
-            {
-                $msg = 'Selected document type and format already generated.';
-                // return redirect()->route('sequence')->with('STATUS_FAIL', $msg)->withInput();
-                return redirect()->back()->with('STATUS_FAIL', $msg)->withInput();
-            }
-        }
-
+        // foreach($doc_numbers as $doc_number)
+        // {
+        //     if(Input::get('sequence_doc_name') == $doc_number->document_id && Input::get('sequence_name') == $doc_number->template_id)
+        //     {
+        //         $msg = 'Selected document type and format already generated.';
+        //         // return redirect()->route('sequence')->with('STATUS_FAIL', $msg)->withInput();
+        //         return redirect()->back()->with('STATUS_FAIL', $msg)->withInput();
+        //     }
+        // }
 
         if(!empty(Input::get('sequence_name')))
         {
             //Insert into Table Document Number
             //-------------------------------------------------------------
             $doc_no = new DocumentNumber;
-            $doc_no->document_id    = Input::get('sequence_doc_name');
+            $doc_no->document_id    = Input::get('seq_doc_id');
             $doc_no->document_name  = Input::get('seq_doc_name');
             $doc_no->running_number = Input::get('seq_no');
             $doc_no->description    = Input::get('sequence_desc');
@@ -133,7 +144,7 @@ class SequenceController extends Controller
             //Insert into Table Document Number History
             //-------------------------------------------------------------
             $doc_no_history = new DocumentNumberHistory;
-            $doc_no_history->document_id    = Input::get('sequence_doc_name');
+            $doc_no_history->document_id    = Input::get('seq_doc_id');
             $doc_no_history->document_name  = Input::get('seq_doc_name');
             $doc_no_history->running_number = Input::get('seq_no');
             $doc_no_history->description    = Input::get('sequence_desc');
@@ -194,7 +205,7 @@ class SequenceController extends Controller
 
             // echo 'Table Document Number <br/>';
             // echo '---------------------------- <br/>';
-            // echo 'Document ID : '.Input::get('sequence_doc_name').'<br/>';
+            // echo 'Document ID : '.Input::get('seq_doc_id').'<br/>';
             // echo 'Document Name : '.Input::get('seq_doc_name').'<br/>';
             // echo 'Document Run No : '.Input::get('seq_no').'<br/>';
             // echo 'Document Description : '.Input::get('sequence_desc').'<br/>';
@@ -208,7 +219,7 @@ class SequenceController extends Controller
 
             // echo 'Table Template <br/>';
             // echo '---------------------------- <br/>';
-            // echo 'Category ID : '.Input::get('sequence_doc_name').'<br/>';
+            // echo 'Category ID : '.Input::get('seq_doc_id').'<br/>';
             // echo 'Format : '.$format.'<br/>';
             // echo 'Modified By : '.Session::get('user.id').'<br/>';
         }else{
@@ -224,17 +235,27 @@ class SequenceController extends Controller
         {
             $doc_number = DocumentNumber::join('doc_notemplates', 'doc_numbers.template_id', '=', 'doc_notemplates.id')->join('users', 'doc_numbers.created_by', '=', 'users.id')->select('doc_numbers.id', 'doc_numbers.document_id', 'doc_numbers.document_name', 'doc_numbers.running_number', 'doc_notemplates.temp_name', 'doc_notemplates.format', 'users.first_name', 'doc_numbers.created_at')->where('doc_numbers.id', $id)->first();
 
-            $format_data = $doc_number->format;
-            $format_array      = explode('/', $format_data);
-            $format_prefix     = $format_array[0];
-            $format_div        = $format_array[1];
-            $format_dept       = $format_array[2];
-            $format_sec        = $format_array[3];
-            $format_seq        = $format_array[4];
-            $format_year       = $format_array[5];
-            $format_postfix    = $format_array[6];
+            $obj_format = $doc_number->format;
+            $format_array = explode('/', $obj_format);
+            $indexs = count($format_array);
+            $postfix = array_pop($format_array); //get last array
+            /*$last = array_shift($format_array); //get first array*/
+            unset($format_array[$indexs - 1]);
+            $objs = array_values($format_array);
 
-            $format = $format_prefix.'/'.$format_div.'/'.$format_dept.'/'.$format_sec.'/'.convert_sequence($doc_number->running_number).'/'.$format_year.'/'.$format_postfix;
+            $format = implode('/',$objs).'/'.convert_sequence($doc_number->running_number).'/'.Date::today()->format('Y').'/'.$postfix;            
+            
+            // $format_data = $doc_number->format;
+            // $format_array      = explode('/', $format_data);
+            // $format_prefix     = $format_array[0];
+            // $format_div        = $format_array[1];
+            // $format_dept       = $format_array[2];
+            // $format_sec        = $format_array[3];
+            // $format_seq        = $format_array[4];
+            // $format_year       = $format_array[5];
+            // $format_postfix    = $format_array[6];
+
+            // $format = $format_prefix.'/'.$format_div.'/'.$format_dept.'/'.$format_sec.'/'.convert_sequence($doc_number->running_number).'/'.$format_year.'/'.$format_postfix;
 
             $params = array('doc_number' => $doc_number, 'format' => $format);
             return view('pages.sequence.viewSequence', $params);
@@ -250,6 +271,7 @@ class SequenceController extends Controller
         {
             $doc_number = DocumentNumber::join('doc_notemplates', 'doc_numbers.template_id', '=', 'doc_notemplates.id')->join('users', 'doc_numbers.created_by', '=', 'users.id')->select('doc_numbers.id', 'doc_numbers.document_id', 'doc_numbers.document_name', 'doc_numbers.running_number', 'doc_notemplates.temp_name', 'doc_notemplates.format', 'users.first_name', 'doc_numbers.created_at', 'doc_numbers.status')->where('doc_numbers.id', $id)->first();
 
+            /*
             $format_data = $doc_number->format;
             $format_array      = explode('/', $format_data);
             $format_prefix     = $format_array[0];
@@ -261,6 +283,17 @@ class SequenceController extends Controller
             $format_postfix    = $format_array[6];
 
             $format = $format_prefix.'/'.$format_div.'/'.$format_dept.'/'.$format_sec.'/'.convert_sequence($doc_number->running_number).'/'.$format_year.'/'.$format_postfix;
+            */
+
+            $obj_format = $doc_number->format;
+            $format_array = explode('/', $obj_format);
+            $indexs = count($format_array);
+            $postfix = array_pop($format_array); //get last array
+            /*$last = array_shift($format_array); //get first array*/
+            unset($format_array[$indexs - 1]);
+            $objs = array_values($format_array);
+
+            $format = implode('/',$objs).'/'.convert_sequence($doc_number->running_number).'/'.Date::today()->format('Y').'/'.$postfix;
 
             $act_collection = Action::all();
             $act_data = $act_collection->pluck('action_name', 'id');

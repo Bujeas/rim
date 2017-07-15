@@ -7,3 +7,14 @@ function chk_me()
 		document.getElementById('chk_remember').value = chkbox;
 	}
 }
+
+function copyToClipboard(element) 
+{
+	$('#btn-copied').fadeIn('slow');
+	
+	var $temp = $("<input>");
+	$("body").append($temp);
+	$temp.val($(element).text()).select();
+	document.execCommand("copy");
+	$temp.remove();
+}
